@@ -5,18 +5,19 @@ nombre=$1
 
 command=$2
 
-ID=$(cut -d " " -f 1 | pgrep -l $nombre)
-
-if [[ "$(pgrep -l $nombre)" == "$ID $nombre" ]]; then
+if [[ $(pgrep -c $nombre) != 0 ]]; then
     
-    while [ $(pgrep -l $nombre) == "$nombre" ]; do
+    while [[ $(pgrep -c $nombre) != 0 ]]; do
 
-        if [ $(pgrep -l $nombre) == "$nombre" ]; then
+        if [[ $(pgrep -c $nombre) != 0 ]]; then
 
-            ps - $nombre
+            ps -l -C $nombre
+
+            sleep "3"
 
         else
-            kill -CONT $ID
+
+            $command
 
         fi
 
