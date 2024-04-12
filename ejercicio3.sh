@@ -8,24 +8,26 @@ main() {
     #$ejecutable
 
     # $nombre=$(cut -f 2 -d ' ' | pgrep $ejecutable)
-    
-    echo "CPU MEM" -n > Registro_de_consumo.log
 
     while [[ $(pgrep -c $ejecutable) != 0 ]]; do
 
         imp=$(ps -C $ejecutable --no-headers -o %cpu="" -o %mem="")
 
-        echo $imp
+        echo "$imp"
 
-        #trans=$(echo "$imp" | cut -d ' ' -f1-2)
+        #trans1=$(echo "$imp" | cut -d ' ' -f1-2)
 
         #echo $trans
 
-        echo "$imp" >> Registro_de_consumo.log
+        trans=$(echo $imp | tr [" "] [","])
 
-        sleep "3"
+        echo "$trans" >> Registro_de_consumo.log
+
+        sleep "2"
 
     done
+
+    gnuplot>plot "Registro_de_consumo.log"
 
 }
 
