@@ -13,21 +13,25 @@ main() {
 
         imp=$(ps -C $ejecutable --no-headers -o %cpu="" -o %mem="")
 
-        echo "$imp"
+        date="$(date)"
+
+        trastime="$imp "$(echo $date | cut -d ' ' -f4)""
+
+        echo "$trastime"
 
         #trans1=$(echo "$imp" | cut -d ' ' -f1-2)
 
         #echo $trans
 
-        trans=$(echo $imp | tr [" "] [","])
-
-        echo "$trans" >> Registro_de_consumo.log
+        echo $trastime >> Registro_de_consumo.log
 
         sleep "2"
 
     done
 
-    gnuplot>plot "Registro_de_consumo.log"
+    echo "set datafile separator " "" | gnuplot
+
+    echo "plot Registro_de_consumo.log u 1:2" | gnuplot
 
 }
 
