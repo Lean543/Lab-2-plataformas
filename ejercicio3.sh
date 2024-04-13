@@ -4,34 +4,25 @@
 main() {
 
     ejecutable=$1
-
-    #$ejecutable
-
-    # $nombre=$(cut -f 2 -d ' ' | pgrep $ejecutable)
+    
 
     while [[ $(pgrep -c $ejecutable) != 0 ]]; do
 
         imp=$(ps -C $ejecutable --no-headers -o %cpu="" -o %mem="")
 
-        date="$(date)"
+        time1=$(ps -C $ejecutable --no-headers -o time="")
 
-        trastime="$imp "$(echo $date | cut -d ' ' -f4)""
+        trastime="$(echo $time1 | cut -d ':' -f3)"
 
-        echo "$trastime"
+        conc="$trastime $imp"
 
-        #trans1=$(echo "$imp" | cut -d ' ' -f1-2)
+        echo $conc
 
-        #echo $trans
-
-        echo $trastime >> Registro_de_consumo.log
-
-        sleep "2"
+        echo $conc >> Registro_de_consumo.log
 
     done
 
-    echo "set datafile separator " "" | gnuplot
-
-    echo "plot Registro_de_consumo.log u 1:2" | gnuplot
+    gnuplot -e "set datafile separator ' '; plot 'Registro_de_consumo.log' using 1:2 t 'cpu', 'Registro_de_consumo.log' using 1:3 t 'mem'"
 
 }
 
