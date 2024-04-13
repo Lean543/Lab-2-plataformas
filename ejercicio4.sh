@@ -18,6 +18,8 @@ monitoriar(){
 
 main(){
 
+    mkdir dirmonitorice
+
     monitoriar
     
 }
