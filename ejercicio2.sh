@@ -1,33 +1,35 @@
 #!/bin/bash
 
-
-nombre=$1
-
-command=$2
-
-if [[ $(pgrep -c $nombre) != 0 ]]; then
+main() {
     
-    while [[ $(pgrep -c $nombre) != 0 ]]; do
+    nombre=$1
 
-        if [[ $(pgrep -c $nombre) != 0 ]]; then
+    command=$2
 
-            ps -l -C $nombre
+    if [[ $(pgrep -c $nombre) != 0 ]]; then
+        
+        while [[ $(pgrep -c $nombre) != 0 ]]; do
 
-            sleep "3"
+            if [[ $(pgrep -c $nombre) != 0 ]]; then
 
-        else
+                ps -f -C $nombre
 
-            $command
+                sleep "3"
 
-        fi
+            else
 
-    done
+                $command
 
-else
+            fi
 
-    echo "Error: Proceso $nombre no está corriendo."
+        done
 
-fi
+    else
 
+        echo "Error: Proceso $nombre no está corriendo."
 
+    fi
 
+}
+
+main "$@"
